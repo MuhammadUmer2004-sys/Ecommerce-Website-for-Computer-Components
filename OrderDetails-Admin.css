@@ -1,0 +1,126 @@
+/* OrderDetails-Admin.css */
+.admin-order-details {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a2942 0%, #131c2e 100%);
+  padding: 2rem;
+}
+
+.admin-order-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-order-back-btn {
+  color: rgb(255, 255, 255) ;
+  text-transform: none ;
+  padding: 0.5rem 1rem ;
+}
+
+.admin-order-title {
+  color: white ;
+  font-size: 1.75rem ;
+  font-weight: 600 ;
+}
+
+.admin-order-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+}
+
+.admin-order-info-section,
+.admin-order-items-section-details,
+.admin-order-history-section {
+  background: white;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px ;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.admin-order-info-section:hover,
+.admin-order-items-section-details:hover,
+.admin-order-history-section:hover {
+  background: rgba(255, 255, 255, 1) ;
+  transform: translateY(-2px);
+}
+
+.admin-order-section-title {
+  color: rgb(0, 0, 0) ;
+  font-size: 1.25rem ;
+  margin-bottom: 1.5rem ;
+}
+
+.admin-order-status-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-order-status-select {
+  min-width: 200px;
+}
+
+.admin-order-status-btn {
+  background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%) ;
+  color: rgb(0, 0, 0) ;
+  padding: 0.5rem 1.5rem ;
+}
+
+.admin-order-divider {
+  background-color: rgba(255, 255, 255, 0.1) ;
+  margin: 1rem 0 ;
+}
+
+.admin-order-table-container-details {
+  margin-top: 1rem;
+}
+
+.admin-order-table-header-details {
+  color: rgba(0, 0, 0, 0.9) ;
+  font-weight: 600 ;
+  background: rgba(255, 255, 255, 0.05) ;
+}
+
+.MuiTableCell-body {
+  color: rgba(0, 0, 0, 0.8) ;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) ;
+}
+
+.admin-order-status-timeline {
+  margin-top: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .admin-order-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .admin-order-status-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .admin-order-status-select {
+    width: 100%;
+  }
+}
+
