@@ -23,12 +23,17 @@ import Checkout from "./Checkout";
 import { WishlistProvider } from '../context/WishListContext';
 import SearchResults from "./SearchResults";
 import ProductReview from "./ProductReview";
+import Diagnostic from "./Diagnostic";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
+      {
+        path: "/diagnose",
+        element: <Diagnostic />,
+      },
       {
         path: "/login",
         element: <Login />,
