@@ -36,7 +36,7 @@ const paymentRoutes = require('./routes/Payment')
 
 //utils
 const { scheduleTokenCleanup } = require('./utils/scheduler');
-scheduleTokenCleanup();
+// scheduleTokenCleanup(); // Serverless functions do not support background chron jobs
 
 //Category Routes
 app.use('/api/categories', categoryRoutes);
