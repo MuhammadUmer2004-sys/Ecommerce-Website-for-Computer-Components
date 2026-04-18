@@ -86,19 +86,13 @@ const CategoryPage = () => {
     });
 
     result.sort((a, b) => {
-      const priceA = parseInt(a.price.toString().replace(/,/g, ""));
-      const priceB = parseInt(b.price.toString().replace(/,/g, ""));
-
-      switch (sortBy) {
-        case "priceLow":
-          return priceA - priceB;
-        case "priceHigh":
-          return priceB - priceA;
-        case "newest":
-          return b.id - a.id;
-        default:
-          return 0;
-      }
+      const priceA = parseFloat(a.price.toString().replace(/,/g, ''));
+      const priceB = parseFloat(b.price.toString().replace(/,/g, ''));
+      
+      if (sortBy === "price-low") return priceA - priceB;
+      if (sortBy === "price-high") return priceB - priceA;
+      if (sortBy === "newest") return b.id - a.id;
+      return 0;
     });
 
     setFilteredProducts(result);
