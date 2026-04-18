@@ -32,11 +32,18 @@ const ProductCard = ({ id, image, name, price, description, brand }) => {
     }
   };
 
+  const fallbackImage = "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=400";
+  const displayImage = image && image !== 'https://via.placeholder.com/300' ? image : fallbackImage;
+
   return (
     <>
       <div className="product-card" onClick={handleClick}>
         <div className="product-image">
-          <img src={image} alt={name} />
+          <img 
+            src={displayImage} 
+            alt={name} 
+            onError={(e) => { e.target.src = fallbackImage }}
+          />
           <div className="product-overlay">
             <button className="cart-btn" onClick={handleAddToCart}>
               <i className="fas fa-shopping-cart"></i> Add to Cart
