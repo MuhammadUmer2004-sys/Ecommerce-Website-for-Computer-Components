@@ -5,6 +5,7 @@ const Diagnostic = () => {
     const [status, setStatus] = useState('Checking...');
     const [baseUrl, setBaseUrl] = useState(process.env.REACT_APP_API_BASE_URL || 'NOT SET');
     const [dbResult, setDbResult] = useState('');
+    const [resData, setResData] = useState([]);
 
     useEffect(() => {
         const runDiagnostic = async () => {
@@ -13,6 +14,7 @@ const Diagnostic = () => {
                 const res = await axios.get(`${baseUrl}/api/products`);
                 setStatus('✅ Backend Connection: OK');
                 setDbResult(`Total Products Found: ${res.data.length}`);
+                setResData(res.data);
             } catch (err) {
                 setStatus('❌ Backend Connection: FAILED');
                 setDbResult(`Error Detail: ${err.message}`);
@@ -33,6 +35,15 @@ const Diagnostic = () => {
                 <h3>Connection Status:</h3>
                 <h2 style={{ color: status.includes('OK') ? 'green' : 'red' }}>{status}</h2>
                 <p><strong>Result:</strong> {dbResult}</p>
+
+                {resData && resData.length > 0 && (
+                    <div style={{ marginTop: '20px', padding: '10px', background: '#eee', borderRadius: '5px' }}>
+                        <h3>Raw Product Data (First Item):</h3>
+                        <pre style={{ fontSize: '12px', overflowX: 'auto' }}>
+                            {JSON.stringify(resData[0], null, 2)}
+                        </pre>
+                    </div>
+                )}
             </div>
             
             <div style={{ marginTop: '20px', color: '#666' }}>
