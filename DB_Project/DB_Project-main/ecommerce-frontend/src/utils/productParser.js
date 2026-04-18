@@ -1,15 +1,30 @@
 // src/utils/productParser.js
 
 export const parseProductDescription = (productDesc) => {
-  const [brand, specs, features, description] = productDesc.split('\\');
+  if (!productDesc || !productDesc.includes('\\')) {
+    return {
+      brand: '',
+      specs: {},
+      features: [],
+      description: productDesc || ''
+    };
+  }
+
+  const parts = productDesc.split('\\');
+  const brand = parts[0] || '';
+  const specsStr = parts[1] || '';
+  const featuresStr = parts[2] || '';
+  const description = parts[3] || '';
   
-  const specsObject = specs.split(', ').reduce((acc, spec) => {
-    const [key, value] = spec.split(': ');
-    acc[key] = value;
+  const specsObject = specsStr.split(', ').reduce((acc, spec) => {
+    if (spec.includes(': ')) {
+      const [key, value] = spec.split(': ');
+      acc[key] = value;
+    }
     return acc;
   }, {});
 
-  const featuresArray = features.split(', ');
+  const featuresArray = featuresStr ? featuresStr.split(', ') : [];
 
   return {
     brand,
