@@ -1,8 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 
+const storage = multer.memoryStorage();
 const upload = multer({
-    dest: 'uploads/', // Save to 'uploads/' directory
+    storage: storage, // Use memory storage for Vercel compatibility
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname).toLowerCase();
         if (ext !== '.csv') {
