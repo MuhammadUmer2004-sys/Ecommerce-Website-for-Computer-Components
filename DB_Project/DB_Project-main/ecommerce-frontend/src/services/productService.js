@@ -15,7 +15,10 @@ axios.interceptors.request.use((config) => {
 const transformProductResponse = (product) => {
   if (!product) return null;
   const parsedDesc = product.product_desc ? parseProductDescription(product.product_desc) : {};
-  const images = product.images || [];
+  let images = product.images || [];
+  if (typeof images === 'string') {
+    try { images = JSON.parse(images); } catch (e) { images = []; }
+  }
   
   return {
     id: product.product_id,
@@ -25,7 +28,7 @@ const transformProductResponse = (product) => {
     category_id: product.category_id,
     ...parsedDesc,
     images: images,
-    image: images.length > 0 ? images[0].image_url : 'https://via.placeholder.com/300'
+    image: (images && images.length > 0) ? images[0].image_url : 'https://via.placeholder.com/300'
   };
 };
 
