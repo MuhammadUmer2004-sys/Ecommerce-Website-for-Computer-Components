@@ -105,12 +105,12 @@ const seedData = async (req, res) => {
 
         // 3. Seed some Products
         const products = [
-            [1, 'Macbook Pro M3', 744900, 5, 'Apple M3 chip, 16GB RAM, 512GB SSD'],
-            [1, 'HP Victus 15', 199999, 10, 'AMD Ryzen 7, RTX 4050, 16GB RAM'],
-            [6, 'Samsung 990 Pro 1TB', 45000, 20, 'NVMe Gen4 SSD, fast speeds'],
-            [6, 'Seagate BarraCuda 2TB', 15000, 50, 'Reliable HDD storage'],
-            [4, 'ASUS ROG RTX 4090', 580000, 2, 'Monster GPU for 4K gaming'],
-            [2, 'ViewSonic 27" 180Hz', 39999, 15, 'IPS 1440p gaming monitor']
+            [1, 'Apple Macbook Pro M3', 744900, 5, 'Apple M3 chip, 16GB RAM, 512GB SSD'],
+            [1, 'HP Victus 15 Gaming Laptop', 199999, 10, 'AMD Ryzen 7, RTX 4050, 16GB RAM'],
+            [6, 'Samsung 990 Pro 1TB SSD', 45000, 20, 'NVMe Gen4 SSD, fast speeds'],
+            [6, 'Seagate BarraCuda 2TB HDD', 15000, 50, 'Reliable HDD storage'],
+            [4, 'ASUS ROG RTX 4090 GPU', 580000, 2, 'Monster GPU for 4K gaming'],
+            [2, 'ViewSonic 27" 180Hz Monitor', 39999, 15, 'IPS 1440p gaming monitor']
         ];
 
         for (const prod of products) {

@@ -31,9 +31,13 @@ class Product {
         try {
             let query = 'SELECT * FROM product';
             const values = [];
-            if (filter.category) {
+            
+            // Flexible filtering to support both Frontend and Backend names
+            const categoryId = filter.category_id || filter.category;
+            
+            if (categoryId) {
                 query += ' WHERE category_id = $1';
-                values.push(filter.category);
+                values.push(categoryId);
             }
             const result = await pool.query(query, values);
             return result.rows;

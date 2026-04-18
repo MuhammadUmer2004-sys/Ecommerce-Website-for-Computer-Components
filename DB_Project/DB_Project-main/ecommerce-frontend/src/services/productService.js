@@ -55,26 +55,31 @@ export const productService = {
   },
 
   // Filter products
-  filterProducts: async (filters) => {
+  getAllProducts: async (params) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/products/filter`, {
-        params: filters
-      });
+      // Align frontend filter names with backend
+      const backendParams = {
+        category_id: params?.category,
+        min_price: params?.minPrice,
+        max_price: params?.maxPrice
+      };
+      const response = await axios.get(`${API_BASE_URL}/api/products`, { params: backendParams });
       return response.data.map(transformProductResponse);
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to filter products");
+      console.error('Error fetching products:', error);
+      throw error;
     }
   },
 
-  // Search products
   searchProducts: async (keyword) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/products/search`, {
-        params: { keyword }
+        params: { keyword } // Backend expects 'keyword'
       });
       return response.data.map(transformProductResponse);
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to search products");
+      console.error('Error searching products:', error);
+      throw error;
     }
   },
 

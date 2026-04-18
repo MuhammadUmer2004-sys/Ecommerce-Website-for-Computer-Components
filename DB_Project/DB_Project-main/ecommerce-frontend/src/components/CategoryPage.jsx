@@ -27,7 +27,7 @@ const CategoryPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setAllProducts] = useState([]);
 
-  const brands = ["Apple", "HP", "Dell", "Lenovo", "ASUS"];
+  const brands = ["Apple", "HP", "Dell", "Lenovo", "ASUS", "Samsung", "ViewSonic", "Seagate"];
 
   const categoryTitles = {
     laptops: "Laptops",
@@ -74,15 +74,15 @@ const CategoryPage = () => {
   useEffect(() => {
     let result = [...allProducts];
 
-    if (selectedBrands.length > 0) {
-      result = result.filter((product) =>
-        selectedBrands.includes(product.brand)
-      );
-    }
-
     result = result.filter((product) => {
-      const price = parseInt(product.price.toString().replace(/,/g, ""));
-      return price >= priceRange[0] && price <= priceRange[1];
+      const matchesBrand =
+        selectedBrands.length === 0 ||
+        selectedBrands.some(brand => product.name.toLowerCase().includes(brand.toLowerCase()));
+
+      const productPrice = parseFloat(product.price.toString().replace(/,/g, ''));
+      const matchesPrice = productPrice >= priceRange[0] && productPrice <= priceRange[1];
+
+      return matchesBrand && matchesPrice;
     });
 
     result.sort((a, b) => {
