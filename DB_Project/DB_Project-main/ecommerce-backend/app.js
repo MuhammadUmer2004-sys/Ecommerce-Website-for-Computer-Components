@@ -68,6 +68,9 @@ app.use('/api/payments', paymentRoutes);
 //Authentication Routes {login, register}
 app.use('/api/auth', authRoutes);
 
+const { seedData } = require('./utils/seed');
+app.get('/api/seed', seedData);
+
 // Protected Route for Customers
 app.get('/customer', authenticateToken, authorizeRole('customer'), (req, res) => {
     res.json({ message: `Welcome, customer ${req.user.email}!` });
