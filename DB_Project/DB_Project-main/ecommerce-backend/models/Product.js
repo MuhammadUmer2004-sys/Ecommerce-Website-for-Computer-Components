@@ -29,16 +29,21 @@ class Product {
 
     static async findAll(filter = {}) {
         try {
-            let query = 'SELECT * FROM product';
+            let query = `
+                SELECT p.*, 
+                COALESCE(json_agg(json_build_object('image_url', pi.image_url)) FILTER (WHERE pi.image_url IS NOT NULL), '[]') as images
+                FROM product p
+                LEFT JOIN product_image pi ON p.product_id = pi.product_id
+            `;
             const values = [];
-            
-            // Flexible filtering to support both Frontend and Backend names
             const categoryId = filter.category_id || filter.category;
             
             if (categoryId) {
-                query += ' WHERE category_id = $1';
+                query += ' WHERE p.category_id = $1';
                 values.push(categoryId);
             }
+            
+            query += ' GROUP BY p.product_id';
             const result = await pool.query(query, values);
             return result.rows;
         } catch (error) {
@@ -50,9 +55,12 @@ class Product {
     static async searchByKeyword(keyword) {
         try {
             const result = await pool.query(
-                `SELECT product_id, product_name, product_price, product_desc, stock_quantity 
-                 FROM product 
-                 WHERE product_name ILIKE $1 OR product_desc ILIKE $1`,
+                `SELECT p.*, 
+                 COALESCE(json_agg(json_build_object('image_url', pi.image_url)) FILTER (WHERE pi.image_url IS NOT NULL), '[]') as images
+                 FROM product p
+                 LEFT JOIN product_image pi ON p.product_id = pi.product_id
+                 WHERE p.product_name ILIKE $1 OR p.product_desc ILIKE $1
+                 GROUP BY p.product_id`,
                 [`%${keyword}%`]
             );
             return result.rows;
@@ -65,8 +73,11 @@ class Product {
     static async filterProducts({ category_id, min_price, max_price, availability }) {
         try {
             let query = `
-                SELECT product_id, product_name, product_price, product_desc, stock_quantity 
-                FROM product WHERE 1=1
+                SELECT p.*, 
+                COALESCE(json_agg(json_build_object('image_url', pi.image_url)) FILTER (WHERE pi.image_url IS NOT NULL), '[]') as images
+                FROM product p
+                LEFT JOIN product_image pi ON p.product_id = pi.product_id
+                WHERE 1=1
             `;
             const params = [];
         
@@ -91,6 +102,7 @@ class Product {
                 query += ` AND stock_quantity = 0`;
             }
         
+            query += ' GROUP BY p.product_id';
             const result = await pool.query(query, params);
             return result.rows;
         } catch (error) {
