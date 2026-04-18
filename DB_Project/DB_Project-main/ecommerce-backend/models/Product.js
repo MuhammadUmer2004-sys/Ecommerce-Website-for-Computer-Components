@@ -19,7 +19,15 @@ class Product {
 
     static async findById(product_id) {
         try {
-            const result = await pool.query('SELECT * FROM product WHERE product_id = $1', [product_id]);
+            const result = await pool.query(
+                `SELECT p.*, 
+                 (SELECT json_agg(json_build_object('image_url', pi.image_url)) 
+                  FROM product_image pi 
+                  WHERE pi.product_id = p.product_id) as images
+                 FROM product p
+                 WHERE p.product_id = $1`,
+                [product_id]
+            );
             return result.rows[0];
         } catch (error) {
             console.error('Error finding product by ID:', error);
