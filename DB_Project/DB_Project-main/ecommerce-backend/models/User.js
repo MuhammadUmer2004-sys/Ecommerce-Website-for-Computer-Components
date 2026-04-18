@@ -2,7 +2,7 @@ const pool = require('../config/db');
 
 const findById = async (user_id) => {
     try {
-        const result = await pool.query('SELECT * FROM Users WHERE user_id = $1', [user_id]);
+        const result = await pool.query('SELECT * FROM users WHERE user_id = $1', [user_id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching user by ID:', error);
@@ -15,7 +15,7 @@ const updateName = async (user_id, first_name, last_name) => {
         await pool.query('BEGIN'); 
         
         const result = await pool.query(
-            `UPDATE Users SET first_name = $1, last_name = $2 WHERE user_id = $3 RETURNING *`,
+            `UPDATE users SET first_name = $1, last_name = $2 WHERE user_id = $3 RETURNING *`,
             [first_name, last_name, user_id]
         );
         
@@ -32,7 +32,7 @@ const updateEmail = async (user_id, email) => {
     try {
         await pool.query('BEGIN'); 
         const result = await pool.query(
-            `UPDATE Users SET email = $1 WHERE user_id = $2 RETURNING *`,
+            `UPDATE users SET email = $1 WHERE user_id = $2 RETURNING *`,
             [email, user_id]
         );
         
@@ -50,7 +50,7 @@ const updatePassword = async (user_id, password) => {
         await pool.query('BEGIN');
         
         await pool.query(
-            `UPDATE Users SET password = $1 WHERE user_id = $2`,
+            `UPDATE users SET password = $1 WHERE user_id = $2`,
             [password, user_id]
         );
         
@@ -67,7 +67,7 @@ const updateAddressId = async (user_id, address_id) => {
         await pool.query('BEGIN'); 
         
         await pool.query(
-            `UPDATE Users SET user_address_id = $1 WHERE user_id = $2`,
+            `UPDATE users SET user_address_id = $1 WHERE user_id = $2`,
             [address_id, user_id]
         );
         
@@ -81,7 +81,7 @@ const updateAddressId = async (user_id, address_id) => {
 
 const getLoyaltyPoints = async(user_id) => {
     try {
-        const result = await pool.query('SELECT loyalty_points FROM Users WHERE user_id = $1', [user_id]);
+        const result = await pool.query('SELECT loyalty_points FROM users WHERE user_id = $1', [user_id]);
         return result.rows[0];
     } catch (error) {
         console.error('Error fetching loyalty points', error);
@@ -93,7 +93,7 @@ const updateLoyaltyPoints = async (user_id, loyalty_points) => {
     try {
         await pool.query('BEGIN'); 
         const result = await pool.query(
-            'UPDATE Users SET loyalty_points = $2 WHERE user_id = $1 RETURNING *',
+            'UPDATE users SET loyalty_points = $2 WHERE user_id = $1 RETURNING *',
             [user_id, loyalty_points]
         );
 

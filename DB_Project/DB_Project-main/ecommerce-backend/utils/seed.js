@@ -4,7 +4,85 @@ const seedData = async (req, res) => {
     try {
         await pool.query('BEGIN');
 
-        // 1. Seed Categories
+        // 1. CREATE TABLES (Total Database Rebuild)
+        const schema = `
+            CREATE TABLE IF NOT EXISTS category (
+                category_id SERIAL PRIMARY KEY,
+                category_name VARCHAR(100),
+                category_desc TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS product (
+                product_id SERIAL PRIMARY KEY,
+                category_id INT REFERENCES category(category_id),
+                product_name TEXT,
+                product_price NUMERIC(10, 2),
+                stock_quantity INT,
+                product_desc TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS users (
+                user_id SERIAL PRIMARY KEY,
+                first_name VARCHAR(50),
+                last_name VARCHAR(50),
+                email VARCHAR(100) UNIQUE,
+                password VARCHAR(100),
+                role VARCHAR(20) DEFAULT 'customer',
+                loyalty_points INT DEFAULT 0
+            );
+
+            CREATE TABLE IF NOT EXISTS orders (
+                order_id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(user_id),
+                order_status VARCHAR(50) DEFAULT 'Pending',
+                order_amount NUMERIC(10, 2),
+                order_date TIMESTAMP DEFAULT NOW(),
+                shipping_address_id INT
+            );
+
+            CREATE TABLE IF NOT EXISTS orderitem (
+                orderitem_id SERIAL PRIMARY KEY,
+                order_id INT REFERENCES orders(order_id),
+                product_id INT REFERENCES product(product_id),
+                quantity INT
+            );
+
+            CREATE TABLE IF NOT EXISTS cartitem (
+                cartitem_id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(user_id),
+                product_id INT REFERENCES product(product_id),
+                quantity INT,
+                UNIQUE(user_id, product_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS shipping_address (
+                address_id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(user_id),
+                street TEXT,
+                city VARCHAR(100),
+                zip VARCHAR(20)
+            );
+
+            CREATE TABLE IF NOT EXISTS wishlist (
+                wishlist_id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(user_id),
+                product_id INT REFERENCES product(product_id),
+                UNIQUE(user_id, product_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS review (
+                review_id SERIAL PRIMARY KEY,
+                user_id INT REFERENCES users(user_id),
+                product_id INT REFERENCES product(product_id),
+                rating INT CHECK (rating >= 1 AND rating <= 5),
+                comment TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+        `;
+        
+        await pool.query(schema);
+
+        // 2. Seed Categories
         const categories = [
             [1, 'Laptops', 'Portable computers'],
             [2, 'Monitors', 'High resolution screens'],
@@ -20,12 +98,12 @@ const seedData = async (req, res) => {
 
         for (const cat of categories) {
             await pool.query(
-                'INSERT INTO Category (category_id, category_name, category_desc) VALUES ($1, $2, $3) ON CONFLICT (category_id) DO NOTHING',
+                'INSERT INTO category (category_id, category_name, category_desc) VALUES ($1, $2, $3) ON CONFLICT (category_id) DO NOTHING',
                 cat
             );
         }
 
-        // 2. Seed some Products
+        // 3. Seed some Products
         const products = [
             [1, 'Macbook Pro M3', 744900, 5, 'Apple M3 chip, 16GB RAM, 512GB SSD'],
             [1, 'HP Victus 15', 199999, 10, 'AMD Ryzen 7, RTX 4050, 16GB RAM'],
@@ -37,15 +115,15 @@ const seedData = async (req, res) => {
 
         for (const prod of products) {
             await pool.query(
-                'INSERT INTO Product (category_id, product_name, product_price, stock_quantity, product_desc) VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
+                'INSERT INTO product (category_id, product_name, product_price, stock_quantity, product_desc) VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING',
                 prod
             );
         }
 
         await pool.query('COMMIT');
-        res.status(200).json({ success: true, message: "Database seeded successfully!" });
+        res.status(200).json({ success: true, message: "Database built and seeded successfully!" });
     } catch (error) {
-        await pool.query('ROLLBACK');
+        if(pool) await pool.query('ROLLBACK').catch(e => {});
         res.status(500).json({ success: false, error: error.message });
     }
 };
