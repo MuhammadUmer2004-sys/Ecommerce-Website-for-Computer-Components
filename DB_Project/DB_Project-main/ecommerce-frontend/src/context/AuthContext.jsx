@@ -1,5 +1,4 @@
-import { FOCUSABLE_SELECTOR } from "@testing-library/user-event/dist/cjs/utils/index.js";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
