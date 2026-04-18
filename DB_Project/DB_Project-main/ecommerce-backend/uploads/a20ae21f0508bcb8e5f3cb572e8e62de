@@ -1,0 +1,9 @@
+category_id,product_name,product_price,stock_quantity,product_desc,image_urls
+2,Product C,15.75,70,Description of Product C,
+2,Product D,18.99,30,Description of Product D,url6.jpg
+2,Product M,17.49,50,Description of Product M,url14.jpg
+2,Product N,16.99,60,Description of Product N,"url15.jpg,url16.jpg"
+2,Product W,25.99,30,Description of Product W,url24.jpg
+2,Product X,16.49,90,Description of Product X,
+2,Product GG,19.99,40,Description of Product GG,
+2,Product HH,17.75,80,Description of Product HH,url34.jpg

@@ -1,0 +1,147 @@
+/* src/components-css/OrderManagement.css */
+.order-management {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a2942 0%, #131c2e 100%);
+  padding: 2.5rem;
+  color: white;
+  position: relative;
+}
+
+.order-management::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(29, 78, 216, 0.08),
+    transparent 70%
+  );
+  animation: pulseBackground 8s ease-in-out infinite;
+}
+
+.page-title-admin-order {
+  color: white !important;
+  font-weight: 600 !important;
+  margin-bottom: 4rem !important;
+  text-align: center !important;
+}
+
+.filters-section {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.status-filters {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.status-filters .MuiButton-root {
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sort-button {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1.25rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.sort-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+.table-container {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.MuiTableHead-root {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.MuiTableCell-head {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.MuiTableCell-body {
+  color: rgba(255, 255, 255, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.MuiTableRow-root:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.MuiChip-root {
+  font-weight: 500 !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.MuiTablePagination-root {
+  color: white !important;
+}
+
+.MuiTablePagination-select {
+  color: white !important;
+}
+
+.MuiIconButton-root {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.MuiIconButton-root:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+@keyframes pulseBackground {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .order-management {
+    padding: 1.5rem;
+  }
+
+  .filters-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status-filters {
+    width: 100%;
+  }
+
+  .sort-button {
+    width: 100%;
+  }
+}

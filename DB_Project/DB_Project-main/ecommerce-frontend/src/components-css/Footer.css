@@ -1,0 +1,50 @@
+.footer {
+  background: #343a40;
+  color: white;
+  padding: 2rem 0;
+  margin-top: 0;
+  width: 100%;
+  bottom: 0;
+}
+
+.footer h5 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.footer p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #adb5bd;
+}
+
+.footer .fab,
+.footer .fas {
+  margin-right: 0.5rem;
+}
+
+.footer .list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.footer .list-unstyled li {
+  margin-bottom: 0.5rem;
+}
+
+.footer .text-md-center {
+  text-align: center;
+}
+
+.footer .text-center {
+  margin-top: 2rem;
+}

@@ -1,0 +1,305 @@
+.checkout-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+}
+
+/* In src/components-css/Checkout.css */
+.checkout-main {
+  background: #f8f9fa; /* Change this to your desired color */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.checkout-stepper {
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-grid .MuiTextField-root {
+  width: 100%;
+}
+
+.payment-option {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.payment-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.card-extra {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.back-btn,
+.next-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn {
+  background: transparent;
+  border: 2px solid #1e3c72;
+  color: #1e3c72;
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border: none;
+}
+
+.next-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
+}
+
+.back-btn:hover {
+  background: rgba(30, 60, 114, 0.05);
+}
+
+.order-summary {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  padding-bottom: 3rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.summary-items {
+  margin-top: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #eee;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.review-details {
+  display: grid;
+  gap: 2rem;
+}
+
+.review-item {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.review-item h3 {
+  margin-bottom: 1rem;
+  color: #1e3c72;
+}
+
+@media (max-width: 768px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.success-content {
+  text-align: center;
+  animation: slideUp 0.5s ease;
+}
+
+.success-icon {
+  font-size: 5rem;
+  color: #4bb543;
+  margin-bottom: 1rem;
+  animation: scaleIn 0.5s ease;
+}
+
+.email-icon {
+  font-size: 2rem;
+  color: #1e3c72;
+  margin-top: 1rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shipping-form > h2 {
+  margin-bottom: 2rem;
+  color: #1e3c72;
+  font-size: 1.5rem;
+  padding-bottom: 20px;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.checkout-form {
+  padding: 2rem;
+}
+
+/* Fix label visibility and styling */
+.MuiInputLabel-root {
+  color: #1e3c72 !important;
+  font-weight: 500 !important;
+}
+
+/* For input fields background */
+.MuiOutlinedInput-root {
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #1e3c72 !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #1e3c72 !important;
+  border-width: 2px !important;
+}
+
+.MuiInputLabel-outlined.Mui-focused {
+  color: #1e3c72 !important;
+}
+
+.MuiOutlinedInput-input::placeholder {
+  color: #757575 !important;
+  opacity: 1 !important;
+}
+
+/* Error states */
+.MuiFormHelperText-root.Mui-error {
+  color: #d32f2f !important;
+  margin-top: 4px !important;
+}
+
+/* Form section headers */
+.checkout-form h2 {
+  color: #1e3c72;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.MuiOutlinedInput-root input {
+  color: #29303e !important;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif !important;
+}
+
+/* In src/components-css/Checkout.css */
+.payment-section {
+  margin-right: 2rem;
+}
+
+/* Ensure consistent width for payment inputs */
+.payment-details .MuiTextField-root {
+  width: 100%;
+}
