@@ -306,6 +306,9 @@ const ProductDetail = () => {
     }
   };
 
+  const fallbackImage = "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=600";
+  const mainImage = product?.images?.[activeImage]?.image_url || product?.image || fallbackImage;
+
   return (
     <>
       <div className="product-detail-container">
@@ -320,9 +323,10 @@ const ProductDetail = () => {
                   onMouseMove={handleMouseMove}
                 >
                   <img
-                    src={product?.images[activeImage]?.url}
-                    alt={product?.images[activeImage]?.alt}
+                    src={mainImage}
+                    alt={product?.name}
                     className="main-image"
+                    onError={(e) => { e.target.src = fallbackImage }}
                     style={
                       isZoomed
                         ? {
@@ -334,7 +338,7 @@ const ProductDetail = () => {
                   />
                 </div>
 
-                {product?.images.length > 1 && (
+                {product?.images?.length > 1 && (
                   <div className="gallery-navigation">
                     <IconButton
                       onClick={handlePrevImage}
@@ -352,15 +356,19 @@ const ProductDetail = () => {
                 )}
 
                 <div className="thumbnails-container">
-                  {product?.images.map((image, index) => (
+                  {product?.images?.map((img, index) => (
                     <div
-                      key={image.id}
+                      key={index}
                       className={`thumbnail ${
                         index === activeImage ? "active" : ""
                       }`}
                       onClick={() => setActiveImage(index)}
                     >
-                      <img src={image.url} alt={image.alt} />
+                      <img 
+                        src={img.image_url || fallbackImage} 
+                        alt={`${product.name} thumbnail ${index + 1}`} 
+                        onError={(e) => { e.target.src = fallbackImage }}
+                      />
                     </div>
                   ))}
                 </div>

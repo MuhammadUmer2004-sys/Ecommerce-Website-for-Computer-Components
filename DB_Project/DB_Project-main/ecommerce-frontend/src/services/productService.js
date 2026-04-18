@@ -52,15 +52,8 @@ export const productService = {
   // Get single product with images
   getProductById: async (productId) => {
     try {
-      const [productRes, imagesRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/api/products/${productId}`),
-        axios.get(`${API_BASE_URL}/api/products/${productId}/images`)
-      ]);
-      
-      return {
-        ...transformProductResponse(productRes.data),
-        images: imagesRes.data || []
-      };
+      const response = await axios.get(`${API_BASE_URL}/api/products/${productId}`);
+      return transformProductResponse(response.data);
     } catch (error) {
       console.error('Error fetching product details:', error);
       throw error;
