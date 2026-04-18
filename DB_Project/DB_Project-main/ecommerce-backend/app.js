@@ -79,8 +79,11 @@ app.get('/admin',/* authenticateToken, authorizeRole('admin'),*/ (req, res) => {
 });//${req.user.email}
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT,'0.0.0.0', ()=>{
-    console.log(`App is listening on port ${PORT}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT,'0.0.0.0', ()=>{
+        console.log(`App is listening on port ${PORT}`)
+    });
+}
+module.exports = app;
 
 
