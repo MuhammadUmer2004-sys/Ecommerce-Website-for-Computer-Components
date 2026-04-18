@@ -1,4 +1,4 @@
-const { password, database } = require("pg/lib/defaults");
+// Database configuration
 
 const Pool = require("pg").Pool
 
