@@ -61,7 +61,7 @@ const getProduct = async (req, res) => {
     try {
         const result = await Product.findById(req.params.product_id);
         if (!result) return res.status(404).json({ message: "Not found" });
-        res.status(200).json(result);
+        res.status(200).json({ ...result, server_version: '2.0-images-fix' });
     } catch (err) { res.status(500).json({ error: err.message }); }
 };
 
