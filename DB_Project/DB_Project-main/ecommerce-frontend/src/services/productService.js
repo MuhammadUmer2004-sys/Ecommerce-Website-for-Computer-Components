@@ -13,13 +13,14 @@ axios.interceptors.request.use((config) => {
 });
 
 const transformProductResponse = (product) => {
-  const parsedDesc = parseProductDescription(product.product_desc);
+  if (!product) return null;
+  const parsedDesc = product.product_desc ? parseProductDescription(product.product_desc) : {};
   
   return {
     id: product.product_id,
-    name: product.product_name,
-    price: product.product_price,
-    stock: product.stock_quantity,
+    name: product.product_name || 'Unnamed Product',
+    price: product.product_price ? product.product_price.toString() : '0',
+    stock: product.stock_quantity || 0,
     category_id: product.category_id,
     ...parsedDesc,
     images: product.images || []
@@ -30,10 +31,16 @@ export const productService = {
   // Get all products with optional filters
   getAllProducts: async (params = {}) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/products`, { params });
-      return response.data.map(transformProductResponse);
+      const backendParams = {
+        category_id: params?.category,
+        min_price: params?.minPrice,
+        max_price: params?.maxPrice
+      };
+      const response = await axios.get(`${API_BASE_URL}/api/products`, { params: backendParams });
+      return response.data.map(transformProductResponse).filter(p => p !== null);
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to fetch products");
+      console.error('Error fetching products:', error);
+      throw error;
     }
   },
 
@@ -47,26 +54,10 @@ export const productService = {
       
       return {
         ...transformProductResponse(productRes.data),
-        images: imagesRes.data
+        images: imagesRes.data || []
       };
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to fetch product");
-    }
-  },
-
-  // Filter products
-  getAllProducts: async (params) => {
-    try {
-      // Align frontend filter names with backend
-      const backendParams = {
-        category_id: params?.category,
-        min_price: params?.minPrice,
-        max_price: params?.maxPrice
-      };
-      const response = await axios.get(`${API_BASE_URL}/api/products`, { params: backendParams });
-      return response.data.map(transformProductResponse);
-    } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching product details:', error);
       throw error;
     }
   },
@@ -74,9 +65,9 @@ export const productService = {
   searchProducts: async (keyword) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/products/search`, {
-        params: { keyword } // Backend expects 'keyword'
+        params: { keyword } 
       });
-      return response.data.map(transformProductResponse);
+      return response.data.map(transformProductResponse).filter(p => p !== null);
     } catch (error) {
       console.error('Error searching products:', error);
       throw error;
