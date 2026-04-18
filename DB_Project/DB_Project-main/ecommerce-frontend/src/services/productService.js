@@ -60,7 +60,7 @@ export const productService = {
       const response = await axios.get(`${API_BASE_URL}/api/products/filter`, {
         params: filters
       });
-      return response.data;
+      return response.data.map(transformProductResponse);
     } catch (error) {
       throw new Error(error.response?.data?.message || "Failed to filter products");
     }
@@ -72,7 +72,7 @@ export const productService = {
       const response = await axios.get(`${API_BASE_URL}/api/products/search`, {
         params: { keyword }
       });
-      return response.data;
+      return response.data.map(transformProductResponse);
     } catch (error) {
       throw new Error(error.response?.data?.message || "Failed to search products");
     }
