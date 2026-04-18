@@ -15,11 +15,24 @@ axios.interceptors.request.use((config) => {
 const transformProductResponse = (product) => {
   if (!product) return null;
   const parsedDesc = product.product_desc ? parseProductDescription(product.product_desc) : {};
+  
+  // Hardcoded High-Quality Fallbacks for IDs
+  const hardcodedImages = {
+    1: 'https://images.unsplash.com/photo-1517336712462-8360dec82354?auto=format&fit=crop&q=80&w=600', // Macbook
+    2: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=600', // HP Victus
+    3: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=600', // ViewSonic
+    5: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=600', // Monitor
+    6: 'https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&q=80&w=600', // GPU
+    8: 'https://images.unsplash.com/photo-1597872200349-016042c13059?auto=format&fit=crop&q=80&w=600', // SSD
+  };
+
   let images = product.images || [];
   if (typeof images === 'string') {
     try { images = JSON.parse(images); } catch (e) { images = []; }
   }
   
+  const mainImageUrl = (images && images.length > 0) ? images[0].image_url : (hardcodedImages[product.product_id] || "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=600");
+
   return {
     id: product.product_id,
     name: product.product_name || 'Unnamed Product',
@@ -27,8 +40,8 @@ const transformProductResponse = (product) => {
     stock: product.stock_quantity || 0,
     category_id: product.category_id,
     ...parsedDesc,
-    images: images,
-    image: (images && images.length > 0) ? images[0].image_url : 'https://via.placeholder.com/300'
+    images: images.length > 0 ? images.map(img => ({ ...img, image_url: img.image_url || mainImageUrl })) : [{ image_url: mainImageUrl }],
+    image: mainImageUrl
   };
 };
 
