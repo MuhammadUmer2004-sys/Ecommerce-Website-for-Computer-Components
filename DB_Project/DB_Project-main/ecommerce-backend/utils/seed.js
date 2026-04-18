@@ -12,6 +12,7 @@ const seedData = async (req, res) => {
             DROP TABLE IF EXISTS product_image CASCADE;
             DROP TABLE IF EXISTS product CASCADE;
             DROP TABLE IF EXISTS category CASCADE;
+            DROP TABLE IF EXISTS users CASCADE;
 
             CREATE TABLE category (
                 category_id SERIAL PRIMARY KEY,
@@ -42,7 +43,8 @@ const seedData = async (req, res) => {
                 email VARCHAR(100) UNIQUE,
                 password VARCHAR(100),
                 role VARCHAR(20) DEFAULT 'customer',
-                loyalty_points INT DEFAULT 0
+                loyalty_points INT DEFAULT 0,
+                user_address_id INT
             );
 
             CREATE TABLE IF NOT EXISTS orders (

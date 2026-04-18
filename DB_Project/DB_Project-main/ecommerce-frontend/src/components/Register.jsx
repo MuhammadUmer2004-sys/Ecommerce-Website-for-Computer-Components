@@ -64,15 +64,16 @@ const Register = () => {
       }
     } catch (error) {
       if (error.response) {
+        const errorData = error.response.data;
         setErrorMessage(
-          error.response.data.message || "An error occurred while registering."
+          errorData.message || errorData.error || "An error occurred while registering."
         );
         setSuccessMessage("");
       } else if (error.request) {
-        setErrorMessage("Failed to communicate with the backend.");
+        setErrorMessage("Failed to communicate with the backend. Please check your connection.");
         setSuccessMessage("");
       } else {
-        setErrorMessage("An unexpected error occurred.");
+        setErrorMessage(error.message || "An unexpected error occurred.");
         setSuccessMessage("");
       }
     }
