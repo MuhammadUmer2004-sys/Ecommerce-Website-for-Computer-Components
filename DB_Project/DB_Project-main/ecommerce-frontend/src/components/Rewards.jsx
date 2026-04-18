@@ -9,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
 import "./../components-css/Rewards.css";
 
 const rewardItems = [

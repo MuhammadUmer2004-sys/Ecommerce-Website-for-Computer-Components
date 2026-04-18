@@ -48,7 +48,7 @@ const ProductManagement = () => {
         description: "",
         image: null,
       });
-    } catch (error) {
+  } catch (error) {
       setAlert({
         show: true,
         type: "error",
@@ -56,19 +56,6 @@ const ProductManagement = () => {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleCsvUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === "text/csv") {
-      setCsvFile(file);
-    } else {
-      setAlert({
-        show: true,
-        type: "error",
-        message: "Please upload a valid CSV file",
-      });
     }
   };
 

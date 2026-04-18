@@ -26,7 +26,7 @@ import "./../../components-css/OrderManagement.css";
 
 const OrderManagement = () => {
   const navigate = useNavigate();
-  const [orders, setOrders] = useState([
+  const [orders] = useState([
     {
       id: "ORD-001",
       customerName: "John Doe",
