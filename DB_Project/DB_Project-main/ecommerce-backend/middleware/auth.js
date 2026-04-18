@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const { isTokenBlacklisted } = require("../models/Token");
 
 async function authenticateToken(req, res, next) {
     const token = req.headers['authorization']?.split(' ')[1];
@@ -9,7 +10,7 @@ async function authenticateToken(req, res, next) {
         if (isBlacklisted) {
             return res.status(401).json({ success: false, message: "Token is invalidated." });
         }
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        jwt.verify(token, process.env.JWT_KEY || 'Ecommerce123', (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
         next();

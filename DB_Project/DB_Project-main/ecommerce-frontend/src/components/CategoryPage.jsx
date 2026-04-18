@@ -15,6 +15,8 @@ import ProductCard from "./ProductCard";
 import "./../components-css/CategoryPage.css";
 import img from "./../images/product-images/product1-image/22-czone.com.pk-1540-15686-010224084552.jpg";
 
+import { productService } from "../services/productService";
+
 const CategoryPage = () => {
   const { category } = useParams();
   const [viewMode, setViewMode] = useState("grid");
@@ -23,21 +25,9 @@ const CategoryPage = () => {
   const [sortBy, setSortBy] = useState("featured");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [allProducts, setAllProducts] = useState([]);
 
   const brands = ["Apple", "HP", "Dell", "Lenovo", "ASUS"];
-
-  const categoryProducts = {
-    laptops: [
-      {
-        id: 1,
-        name: "Macbook Pro M3",
-        brand: "Apple",
-        price: "744,900",
-        image: img,
-      },
-    ],
-    monitors: [],
-  };
 
   const categoryTitles = {
     laptops: "Laptops",
@@ -52,9 +42,37 @@ const CategoryPage = () => {
     keyboards: "Keyboards",
   };
 
+  const categoryMapping = {
+    laptops: 1,
+    monitors: 2,
+    processors: 3,
+    gpus: 4,
+    ram: 5,
+    storage: 6,
+    motherboards: 7,
+    cases: 8,
+    keyboards: 9,
+    desktops: 10
+  };
+
   useEffect(() => {
-    setIsLoading(true);
-    let result = [...(categoryProducts[category] || [])];
+    const fetchItems = async () => {
+        setIsLoading(true);
+        try {
+            const catId = categoryMapping[category];
+            const data = await productService.getAllProducts({ category: catId });
+            setAllProducts(data);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    fetchItems();
+  }, [category]);
+
+  useEffect(() => {
+    let result = [...allProducts];
 
     if (selectedBrands.length > 0) {
       result = result.filter((product) =>
@@ -63,13 +81,13 @@ const CategoryPage = () => {
     }
 
     result = result.filter((product) => {
-      const price = parseInt(product.price.replace(/,/g, ""));
+      const price = parseInt(product.price.toString().replace(/,/g, ""));
       return price >= priceRange[0] && price <= priceRange[1];
     });
 
     result.sort((a, b) => {
-      const priceA = parseInt(a.price.replace(/,/g, ""));
-      const priceB = parseInt(b.price.replace(/,/g, ""));
+      const priceA = parseInt(a.price.toString().replace(/,/g, ""));
+      const priceB = parseInt(b.price.toString().replace(/,/g, ""));
 
       switch (sortBy) {
         case "priceLow":
@@ -77,15 +95,14 @@ const CategoryPage = () => {
         case "priceHigh":
           return priceB - priceA;
         case "newest":
-          return new Date(b.date) - new Date(a.date);
+          return b.id - a.id;
         default:
           return 0;
       }
     });
 
     setFilteredProducts(result);
-    setIsLoading(false);
-  }, [category, selectedBrands, priceRange, sortBy]);
+  }, [allProducts, selectedBrands, priceRange, sortBy]);
 
   const handlePriceChange = (event, newValue) => {
     setPriceRange(newValue);

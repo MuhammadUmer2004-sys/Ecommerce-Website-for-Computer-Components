@@ -31,7 +31,7 @@ const bulkAddProductsFromCSV = async (req, res) => {
 
 const searchProducts = async (req, res) => {
     try {
-        const result = await Product.searchByKeyword(req.query.q || '');
+        const result = await Product.searchByKeyword(req.query.keyword || '');
         res.status(200).json(result);
     } catch (err) { res.status(500).json({ error: err.message }); }
 };

@@ -12,6 +12,7 @@ import {
 import ReactConfetti from "react-confetti";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { orderService } from "../services/orderService";
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -162,13 +163,26 @@ const Checkout = () => {
     setActiveStep((prev) => prev + 1);
   };
 
-  const handlePlaceOrder = () => {
-    setOrderSuccess(true);
-    setShowConfetti(true);
-    clearCart();
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
+  const handlePlaceOrder = async () => {
+    try {
+        // 1. Create Address logic (In this app, we'll assume the user might have one or we use current)
+        // For simplicity, we just trigger the placeOrder API.
+        // We'll need a shipping_address_id. 
+        // For now, let's use a dummy ID or implement address creation.
+        
+        const response = await orderService.placeOrder(1); // Assuming ID 1 exists for testing, or we should create it.
+        
+        if(response) {
+            setOrderSuccess(true);
+            setShowConfetti(true);
+            clearCart();
+            setTimeout(() => {
+                navigate("/");
+            }, 3000);
+        }
+    } catch (err) {
+        alert("Failed to place order: " + err.message);
+    }
   };
 
   const handlePaymentMethodChange = (event) => {

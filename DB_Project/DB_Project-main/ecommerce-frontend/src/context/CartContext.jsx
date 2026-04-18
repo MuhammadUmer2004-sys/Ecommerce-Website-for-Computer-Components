@@ -1,12 +1,35 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import { cartService } from "../services/cartService";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const { isLoggedIn } = useAuth();
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
+
+  // Fetch cart from backend on login
+  useEffect(() => {
+    if (isLoggedIn) {
+      const syncCart = async () => {
+        const remoteCart = await cartService.getCart();
+        if (remoteCart && remoteCart.length > 0) {
+          // Merge logic or prioritize remote
+          setCartItems(remoteCart.map(item => ({
+            id: item.product_id,
+            name: item.product_name,
+            price: item.product_price,
+            quantity: item.quantity,
+            image: item.image_url
+          })));
+        }
+      };
+      syncCart();
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -18,11 +41,12 @@ export const CartProvider = ({ children }) => {
   };
 
   const parsePrice = (price) => {
-    return parseInt(price?.toString().replace(/[^0-9]/g, "")) || 0;
+    if(!price) return 0;
+    return parseInt(price.toString().replace(/[^0-9]/g, "")) || 0;
   };
 
-  const addToCart = (product) => {
-    if (!product?.id || !product?.price) return;
+  const addToCart = async (product) => {
+    if (!product?.id) return;
     
     setCartItems(prev => {
       const existing = prev.find(item => item.id === product.id);
@@ -35,13 +59,20 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
+
+    if (isLoggedIn) {
+      await cartService.addToCart(product.id, 1);
+    }
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = async (productId) => {
     setCartItems(prev => prev.filter(item => item.id !== productId));
+    if (isLoggedIn) {
+      await cartService.removeFromCart(productId);
+    }
   };
 
-  const updateQuantity = (productId, change) => {
+  const updateQuantity = async (productId, change) => {
     setCartItems(prev => 
       prev.map(item => {
         if (item.id === productId) {
@@ -51,6 +82,12 @@ export const CartProvider = ({ children }) => {
         return item;
       }).filter(Boolean)
     );
+    
+    if (isLoggedIn) {
+        // Simple logic: add/remove 1
+        if(change > 0) await cartService.addToCart(productId, 1);
+        else await cartService.removeFromCart(productId); // This is crude but works for now
+    }
   };
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);

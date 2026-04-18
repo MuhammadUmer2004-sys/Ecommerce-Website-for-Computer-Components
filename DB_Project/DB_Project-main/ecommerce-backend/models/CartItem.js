@@ -24,7 +24,12 @@ class CartItem {
 
     static async getCartItems(user_id) {
         try {
-            const query = `SELECT * FROM CartItem WHERE user_id = $1;`;
+            const query = `
+                SELECT ci.*, p.product_name, p.product_price 
+                FROM CartItem ci
+                JOIN Product p ON ci.product_id = p.product_id
+                WHERE ci.user_id = $1;
+            `;
             const result = await pool.query(query, [user_id]);
             return result.rows;
         } catch (error) {
