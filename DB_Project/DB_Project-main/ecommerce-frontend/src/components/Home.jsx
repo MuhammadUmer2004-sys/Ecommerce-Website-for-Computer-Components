@@ -15,50 +15,25 @@ import i31 from "../images/product-images/product3-image/21-czone.com.pk-1540-15
 import i41 from "../images/product-images/product4-image/52-czone.com.pk-1540-12064-210223095208.jpg";
 import i51 from "../images/product-images/product5-image/6-czone.com.pk-1-1540-15343-111023080631.jpg";
 
-const products = [
-  {
-    id: 101,
-    name: "Macbook Pro M3 Chip",
-    brand: "Apple",
-    price: "744,900",
-    description: "Premium Laptop for Professionals",
-    image: i11,
-  },
-  {
-    id: 102,
-    name: "HP Victus Gaming Laptop",
-    brand: "HP",
-    price: "199,999",
-    description: "High-performance gaming laptop",
-    image: i21,
-  },
-  {
-    id: 103,
-    name: "ViewSonic Gaming Monitor",
-    brand: "ViewSonic",
-    price: "39,999",
-    description: "27-inch 180Hz Gaming Monitor",
-    image: i31,
-  },
-  {
-    id: 104,
-    name: "Razer DeathAdder",
-    brand: "Razer",
-    price: "6,999",
-    description: "Wired Gaming Mouse with 16,000 DPI",
-    image: i41,
-  },
-  {
-    id: 105,
-    name: "Geforce RTX 4060",
-    brand: "Nvidia",
-    price: "99,999",
-    description: "High-performance GPU for Gaming",
-    image: i51,
-  },
-];
+import { productService } from "../services/productService";
 
 const Home = () => {
+  const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchNewArrivals = async () => {
+        try {
+            const data = await productService.getAllProducts();
+            setProducts(data.slice(0, 10)); // Top 10 new arrivals
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchNewArrivals();
+  }, []);
   const settings = {
     dots: true,
     infinite: true,
